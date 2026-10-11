@@ -12,6 +12,7 @@ public class OrederManager : MonoBehaviour
     public bool order;
     public OrederData[] orderDatas;
     public OrederData curOrderData;
+    public GameObject yesnopanel;
 
     void Awake()
     {
@@ -63,7 +64,9 @@ public class OrederManager : MonoBehaviour
     }
     public void Served(Hamburger hamburger)
     {
-        for(int i = 0; i < orderDatas.Length; i++)
+        yesnopanel.SetActive(false);
+        StartCoroutine(CoWait());
+        for (int i = 0; i < orderDatas.Length; i++)
         {
            // if()
            //curOrderData.ingredientNames
@@ -71,6 +74,15 @@ public class OrederManager : MonoBehaviour
            // 햄버거 잘 만들었는지 계산           
         }
         Answer(true);
+    }
+    IEnumerator CoWait()
+    {
+        yield return new WaitForSeconds(2f); // 2초 기다리기
+        Customer.Instance.EndMove();
+        float sec = Random.Range(3,4);
+        yield return new WaitForSeconds(sec);
+        NewOrder();
+
     }
     public void AcceptOrder()
     {

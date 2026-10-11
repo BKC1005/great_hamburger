@@ -11,6 +11,7 @@ public class KitchenManager : MonoBehaviour
     public float howmuchIngredient = 0;
     public int grillonM = 0;
     public Hamburger hamburger;
+    public Transform kitchenTr;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -19,12 +20,20 @@ public class KitchenManager : MonoBehaviour
 
     void OnEnable()
     {
-        hamburger.Clear();
+        StartKitchen();        
     }
 
     void OnDisable()
     {
-        hamburger.gameObject.SetActive(false);
+        // hamburger.gameObject.SetActive(false);
+    }
+
+    public void StartKitchen()
+    {
+        Debug.Log("Kitchen<anager OnEnable()");
+        hamburger.Clear();
+        GrillManager.Instance.RemoveAll();
+        hamburger.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -52,7 +61,7 @@ public class KitchenManager : MonoBehaviour
             {
                 if (ingredientContainer.ingredientName == IngredientName.Bread)
                 {                    
-                    GameObject bread = Instantiate(breadPrefab);
+                    GameObject bread = Instantiate(breadPrefab, kitchenTr);
 
                     hamburger.AddIngredient(bread.GetComponent<Ingredient>());
                     
@@ -64,7 +73,7 @@ public class KitchenManager : MonoBehaviour
                     {
                         if (GrillManager.Instance.meats[i] == null)
                         {
-                            GameObject meat = Instantiate(meatPrefab);
+                            GameObject meat = Instantiate(meatPrefab, kitchenTr);
                             GrillManager.Instance.AddMeat(meat);
                             break;
                         }
